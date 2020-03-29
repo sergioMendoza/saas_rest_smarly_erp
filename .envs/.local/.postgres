@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=saas_smarly_erp
+POSTGRES_USER=xDqwNvfxwqDvwVmSVtFljRbZNXZBWvxb
+POSTGRES_PASSWORD=CGpJ7WloyLKzKVwivg3fPKW5EQFJ8zjjmBm2qX1QV01VoG2mdqPZplhpMZlmazNa

@@ -1,0 +1,5 @@
+[run]
+include = saas_smarly_erp/*
+omit = *migrations*, *tests*
+plugins =
+    django_coverage_plugin
