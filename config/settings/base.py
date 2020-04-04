@@ -64,23 +64,18 @@ SHARED_APPS = (
     "saas_smarly_erp.apps.customers",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.sites",
-    "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    # "django.contrib.humanize", # Handy template tags
+    # Handy template tags
     "django_celery_beat",
     "rest_framework",
-    # "rest_framework.authtoken",
 )
 
 TENANT_APPS = (
+    "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.admin",
     "saas_smarly_erp.apps.users"
 )
-
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -91,7 +86,7 @@ DEFAULT_FILE_STORAGE = 'tenant_schemas.storage.TenantFileSystemStorage'
 # MIGRATIONS
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#migration-modules
-MIGRATION_MODULES = {"sites": "saas_smarly_erp.contrib.sites.migrations"}
+# MIGRATION_MODULES = {"sites": "saas_smarly_erp.contrib.sites.migrations"}
 
 # AUTHENTICATION
 # ------------------------------------------------------------------------------
@@ -105,9 +100,11 @@ AUTH_USER_MODEL = "users.User"
 
 TENANT_MODEL = "customers.Client"  # app.Model
 
-# # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
+MAIN_DOMAIN_URL = "smarlyerp.com"
+
+# https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
 # LOGIN_REDIRECT_URL = "users:redirect"
-# # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
+# https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 # LOGIN_URL = "account_login"
 
 # PASSWORDS
@@ -134,7 +131,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#middleware
 MIDDLEWARE = [
-    "tenant_schemas.middleware.TenantMiddleware",
+    "saas_smarly_erp.apps.customers.middleware.XHeaderTenantMiddleware",
+    # "tenant_schemas.middleware.TenantMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
@@ -192,7 +190,6 @@ TEMPLATES = [
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
-                "django.contrib.messages.context_processors.messages",
                 "saas_smarly_erp.utils.context_processors.settings_context",
             ],
         },
@@ -208,7 +205,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 # http://django-crispy-forms.readthedocs.io/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = "bootstrap4"
+# CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # FIXTURES
 # ------------------------------------------------------------------------------
@@ -292,16 +289,25 @@ CELERY_TASK_SOFT_TIME_LIMIT = 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#beat-scheduler
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
-
 # django-reset-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
+        "saas_smarly_erp.apps.cognito.JSONWebTokenAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
 # Your stuff...
 # ------------------------------------------------------------------------------
+
+COGNITO_USER_MODEL = 'users.User'
+
+COGNITO_AWS_REGION = 'us-east-1'  # 'eu-central-1'
+COGNITO_USER_POOL = 'us-east-1_XFcs8UnpE'  # 'eu-central-1_xYzaq'
+COGNITO_AUDIENCE = '7mh9kfaij3el3dcdv69g3bo0g4'
+
+COGNITO_PUBLIC_KEYS_CACHING_ENABLED = False
+COGNITO_PUBLIC_KEYS_CACHING_TIMEOUT = 60 * 60 * 24  # 24h caching, default is 300s

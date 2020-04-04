@@ -5,9 +5,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 
-# tenant schema
-from tenant_schemas.models import TenantMixin
-
 # Utilities
 from saas_smarly_erp.utils.models import SmarlyModel
 

@@ -11,7 +11,8 @@ SECRET_KEY = env(
     default="lItQsYoxJjC4kD6q1lpemiVbHKgzOW7npDJ9DrJwM9MQMSRBZlnY3q3x82Vvy7A8",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "vonallem.smarlyerp.com", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+
 
 # CACHES
 # ------------------------------------------------------------------------------

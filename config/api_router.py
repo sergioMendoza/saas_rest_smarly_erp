@@ -1,15 +1,7 @@
 from django.conf import settings
-from rest_framework.routers import DefaultRouter, SimpleRouter
+from django.urls import path, include, re_path
 
-# from saas_smarly_erp.apps.users.api.views import UserViewSet
-
-if settings.DEBUG:
-    router = DefaultRouter()
-else:
-    router = SimpleRouter()
-
-# router.register("users", UserViewSet)
-
-
-app_name = "api"
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include('saas_smarly_erp.apps.customers.urls')),
+    path('', include('saas_smarly_erp.apps.users.urls'))
+]
